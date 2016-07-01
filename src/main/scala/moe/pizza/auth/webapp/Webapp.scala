@@ -79,7 +79,7 @@ class Webapp(fullconfig: ConfigFile,
   implicit class RichHydratedSession(hs: HydratedSession) {
     def toNormalSession = new Session(hs.alerts)
      def updatePilot: HydratedSession = {
-       hs.copy(pilot = ud.getUser(hs.pilot.get.uid))
+       hs.copy(pilot = hs.pilot.map(_.uid).flatMap(uid=>ud.getUser(uid)))  // NOTE:  hs.pilot can be None (if logged out)
      }
   }
 
